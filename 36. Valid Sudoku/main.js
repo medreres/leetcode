@@ -5,41 +5,32 @@
 var isValidSudoku = function (board) {
     let boardIsValid = true;
 
-    // iterate through rows
+    // iterate through rows and columns at once
     for (let i = 0; i < 9 && boardIsValid; i++) {
-        let map = new Map();
+        let mapRows = new Map();
+        let mapColumns = new Map();
         for (let j = 0; j < 9 && boardIsValid; j++) {
-            if (board[i][j] === '.')
-                continue;
 
-            if (!map.get(board[i][j])) {
-                map.set(board[i][j], 1);
-            } else {
-                boardIsValid = false;
+            let cellRow = board[i][j];
+
+            if (cellRow !== '.') {
+                if (!mapRows.has(cellRow)) {
+                    mapRows.set(cellRow, 1);
+                } else {
+                    boardIsValid = false;
+                }
+            }
+
+            let cellCol = board[j][i];
+            if (cellCol !== '.') {
+                if (!mapColumns.has(cellCol)) {
+                    mapColumns.set(cellCol, 1);
+                } else {
+                    boardIsValid = false;
+                }
             }
         }
     }
-
-    // if board already is invalid, return false
-    if (!boardIsValid)
-        return boardIsValid;
-
-    // iterate through columns
-    for (let i = 0; i < 9 && boardIsValid; i++) {
-        let map = new Map();
-        for (let j = 0; j < 9 && boardIsValid; j++) {
-            let cell = board[j][i];
-            if (cell === '.')
-                continue;
-
-            if (!map.get(cell)) {
-                map.set(cell, 1);
-            } else {
-                boardIsValid = false;
-            }
-        }
-    }
-
     if (!boardIsValid)
         return boardIsValid;
 
@@ -77,7 +68,7 @@ var isValidSudoku = function (board) {
 };
 
 let board = [
-    ["8", "3", ".", ".", "7", ".", ".", ".", "."],
+    ["5", "3", ".", ".", "7", ".", ".", ".", "."],
     ["6", ".", ".", "1", "9", "5", ".", ".", "."],
     [".", "9", "8", ".", ".", ".", ".", "6", "."],
     ["8", ".", ".", ".", "6", ".", ".", ".", "3"],
